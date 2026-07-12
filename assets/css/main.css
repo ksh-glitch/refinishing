@@ -156,8 +156,9 @@ body.nav-open .brand img,
 .brand-name .top { font-family: var(--font-display); font-size: 1.06rem; font-weight: 500; letter-spacing: 0; }
 .brand-name .bottom { font-family: var(--font-ui); font-size: 0.58rem; font-weight: 600; letter-spacing: 0.32em; text-transform: uppercase; color: var(--brass); margin-top: 0.25rem; }
 
-.site-nav ul { display: flex; align-items: center; gap: clamp(1.2rem, 2.5vw, 2.2rem); list-style: none; margin: 0; padding: 0; }
+.site-nav ul { display: flex; align-items: center; gap: clamp(1rem, 1.8vw, 1.8rem); list-style: none; margin: 0; padding: 0; }
 .site-nav a {
+  white-space: nowrap;
   font-family: var(--font-ui);
   font-size: 0.75rem;
   font-weight: 600;
@@ -205,7 +206,7 @@ body.nav-open .brand img,
 .header-on-dark:not(.is-scrolled) .site-nav .nav-cta a:hover { background: var(--paper-on-dark); color: var(--ink); }
 .header-on-dark:not(.is-scrolled) .nav-toggle span { background: var(--paper-on-dark); }
 
-@media (max-width: 900px) {
+@media (max-width: 1240px) {
   .nav-toggle { display: block; }
   .site-nav {
     position: fixed;
@@ -450,7 +451,7 @@ body.nav-open .brand img,
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(20, 12, 6, 0.82), rgba(20, 12, 6, 0.05) 55%);
+  background: linear-gradient(to top, rgba(20, 12, 6, 0.85), rgba(20, 12, 6, 0.35) 55%, rgba(20, 12, 6, 0.08));
 }
 .service-card-body {
   position: absolute;
@@ -465,6 +466,7 @@ body.nav-open .brand img,
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--brass-soft);
+  text-shadow: 0 1px 6px rgba(20, 12, 6, 0.65);
 }
 .service-card h3 { font-size: 1.65rem; color: #fdf9f0; margin: 0.5rem 0 0.4rem; }
 .service-card p { font-size: 0.98rem; color: rgba(241, 232, 216, 0.82); margin: 0 0 1rem; }
@@ -588,8 +590,13 @@ body.nav-open .brand img,
   text-transform: uppercase;
   color: var(--taupe);
 }
-.clients-strip span { display: flex; align-items: center; gap: 3rem; }
+.clients-strip span { display: flex; align-items: center; gap: 1.5rem; }
 .clients-strip .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--brass); }
+.clients-strip span:last-child .dot { display: none; }
+@media (max-width: 700px) {
+  .clients-strip .dot { display: none; }
+  .clients-strip span { gap: 0; }
+}
 
 /* ---------- CTA band ---------- */
 .cta-band { text-align: center; }
@@ -605,7 +612,7 @@ body.nav-open .brand img,
 .site-footer .brand { color: var(--paper-on-dark); margin-bottom: 1.2rem; }
 .site-footer .brand-name .bottom { color: var(--brass-soft); }
 .footer-tagline { max-width: 34ch; font-style: italic; font-size: 1.05rem; color: rgba(241, 232, 216, 0.65); }
-.footer-social a { color: rgba(241, 234, 216, 0.75); text-decoration: none; }
+.footer-social a { color: rgba(241, 234, 216, 0.75); text-decoration: none; display: inline-block; padding: 0.55rem 0.2rem; margin: -0.45rem -0.05rem; }
 .footer-social a:hover { color: #fdf9f0; text-decoration: underline; }
 .footer-col h4 { font-family: var(--font-ui); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brass-soft); margin-bottom: 1.2rem; }
 .footer-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.65rem; }
@@ -696,7 +703,7 @@ body.nav-open .brand img,
   background: none;
   border: 1px solid var(--hairline);
   color: var(--walnut);
-  padding: 0.6rem 1.1rem;
+  padding: 0.9rem 1.1rem;
   cursor: pointer;
   transition: all 0.25s var(--ease-out);
 }
