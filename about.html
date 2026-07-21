@@ -10,6 +10,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340..600;1,9..144,340..600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..600&family=Archivo:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/main.css">
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <style>
+    /* Client logo strip (tokens only) */
+    .logo-strip { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 1.1rem 1.4rem; }
+    .logo-strip img { height: 62px; width: auto; background: #fff; padding: 0.5rem 0.85rem; border: 1px solid var(--hairline); filter: grayscale(1) opacity(0.75); transition: filter 0.5s var(--ease-out); }
+    .logo-strip img:hover { filter: none; }
+    @media (max-width: 640px) { .logo-strip img { height: 48px; padding: 0.4rem 0.6rem; } }
+  </style>
   <link rel="canonical" href="https://www.refinishing.org/about.html">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Our Story — Antiques &amp; Furniture Restoration Inc | Family-Owned Furniture Restoration, Washington DC · MD · VA">
@@ -107,37 +114,37 @@
       <div class="container">
         <div class="folio"><span class="chapter">02 — The Clients</span><span>Government · Embassies · Institutions</span></div>
         <div class="section-head center" data-reveal>
-          <p class="eyebrow eyebrow--center">Trusted by</p>
+          <p class="eyebrow eyebrow--center" style="margin-inline:auto">Trusted by</p>
           <h2 class="section-title" style="margin-inline:auto">The company our furniture <em>keeps.</em></h2>
           <p class="lead" style="margin-inline:auto; max-width:52ch">Most of our work is for households and designers. Some of it stands in rather formal rooms.</p>
         </div>
-        <p class="eyebrow eyebrow--center" style="margin-bottom:1.6rem">Government</p>
-        <div class="clients-strip" data-reveal>
-          <span>The Library of Congress <i class="dot"></i></span>
-          <span>The Environmental Protection Agency</span>
+        <p class="eyebrow eyebrow--center" style="margin-bottom:1.6rem; margin-inline:auto">Government</p>
+        <div class="logo-strip" data-reveal>
+          <img src="assets/img/clients/library-of-congress.webp" alt="The Library of Congress" loading="lazy" width="156" height="170">
+          <img src="assets/img/clients/epa.webp" alt="The Environmental Protection Agency" loading="lazy" width="168" height="167">
         </div>
         <div style="height: clamp(2rem, 5vw, 3.2rem)"></div>
-        <p class="eyebrow eyebrow--center" style="margin-bottom:1.6rem">Embassies of Washington</p>
-        <div class="clients-strip" data-reveal data-reveal-delay="1">
-          <span>The British Embassy <i class="dot"></i></span>
-          <span>Embassy of France <i class="dot"></i></span>
-          <span>Embassy of Lithuania <i class="dot"></i></span>
-          <span>Embassy of Egypt <i class="dot"></i></span>
-          <span>Embassy of Denmark <i class="dot"></i></span>
-          <span>Embassy of Moldova <i class="dot"></i></span>
-          <span>Embassy of Poland <i class="dot"></i></span>
-          <span>Embassy of Japan <i class="dot"></i></span>
-          <span>Embassy of Spain <i class="dot"></i></span>
-          <span>Embassy of Malta <i class="dot"></i></span>
-          <span>Embassy of Guatemala</span>
+        <p class="eyebrow eyebrow--center" style="margin-bottom:1.6rem; margin-inline:auto">Embassies of Washington</p>
+        <div class="logo-strip" data-reveal data-reveal-delay="1">
+          <img src="assets/img/clients/british-embassy.webp" alt="The British Embassy" loading="lazy" width="228" height="186">
+          <img src="assets/img/clients/french-embassy.webp" alt="Embassy of France" loading="lazy" width="400" height="234">
+          <img src="assets/img/clients/lithuanian-embassy.webp" alt="Embassy of Lithuania" loading="lazy" width="178" height="175">
+          <img src="assets/img/clients/embassy-of-egypt.webp" alt="Embassy of Egypt" loading="lazy" width="343" height="200">
+          <img src="assets/img/clients/embassy-of-denmark.webp" alt="Embassy of Denmark" loading="lazy" width="318" height="159">
+          <img src="assets/img/clients/embassy-of-moldova.webp" alt="Embassy of Moldova" loading="lazy" width="204" height="200">
+          <img src="assets/img/clients/embassy-of-poland.webp" alt="Embassy of Poland" loading="lazy" width="288" height="288">
+          <img src="assets/img/clients/embassy-of-japan.webp" alt="Embassy of Japan" loading="lazy" width="566" height="200">
+          <img src="assets/img/clients/embassy-of-spain.webp" alt="Embassy of Spain" loading="lazy" width="338" height="200">
+          <img src="assets/img/clients/embassy-of-malta.webp" alt="Embassy of Malta" loading="lazy" width="156" height="200">
+          <img src="assets/img/clients/embassy-of-guatemala.webp" alt="Embassy of Guatemala" loading="lazy" width="400" height="200">
         </div>
         <div style="height: clamp(2rem, 5vw, 3.2rem)"></div>
-        <p class="eyebrow eyebrow--center" style="margin-bottom:1.6rem">Clubs &amp; Institutions</p>
-        <div class="clients-strip" data-reveal data-reveal-delay="2">
-          <span>Washington Golf &amp; Country Club <i class="dot"></i></span>
-          <span>Trump National Golf Club Washington <i class="dot"></i></span>
-          <span>Hyatt Reston <i class="dot"></i></span>
-          <span>National PTA</span>
+        <p class="eyebrow eyebrow--center" style="margin-bottom:1.6rem; margin-inline:auto">Clubs &amp; Institutions</p>
+        <div class="logo-strip" data-reveal data-reveal-delay="2">
+          <img src="assets/img/clients/washington-golf-country-club.webp" alt="Washington Golf &amp; Country Club" loading="lazy" width="225" height="141">
+          <img src="assets/img/clients/trump-national-golf-club.webp" alt="Trump National Golf Club Washington" loading="lazy" width="400" height="201">
+          <img src="assets/img/clients/hyatt-reston.webp" alt="Hyatt Reston" loading="lazy" width="222" height="100">
+          <img src="assets/img/clients/national-pta.webp" alt="National PTA" loading="lazy" width="360" height="200">
         </div>
       </div>
     </section>
@@ -224,7 +231,7 @@
       <div class="container">
         <div class="folio"><span class="chapter">05 — Questions</span><span>Asked at the bench</span></div>
         <div class="section-head center" data-reveal>
-          <p class="eyebrow eyebrow--center">Before you call</p>
+          <p class="eyebrow eyebrow--center" style="margin-inline:auto">Before you call</p>
           <h2 class="section-title" style="margin-inline:auto">Asked, and <em>answered.</em></h2>
         </div>
         <div class="faq" data-reveal data-reveal-delay="1">
@@ -352,6 +359,7 @@
           <ul>
             <li><a href="about.html">Our Story</a></li>
             <li><a href="about.html#faq">FAQs</a></li>
+            <li><a href="trade.html">For the Trade</a></li>
             <li><a href="guides.html">The Workshop Journal</a></li>
             <li><a href="furniture-care.html">Furniture Care Guide</a></li>
             <li><a href="estimate.html">Free Estimate</a></li>

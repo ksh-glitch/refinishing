@@ -46,6 +46,13 @@
   }
   </script>
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <style>
+    /* Client logo strip (tokens only) */
+    .logo-strip { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 1.1rem 1.4rem; }
+    .logo-strip img { height: 62px; width: auto; background: #fff; padding: 0.5rem 0.85rem; border: 1px solid var(--hairline); filter: grayscale(1) opacity(0.75); transition: filter 0.5s var(--ease-out); }
+    .logo-strip img:hover { filter: none; }
+    @media (max-width: 640px) { .logo-strip img { height: 48px; padding: 0.4rem 0.6rem; } }
+  </style>
   <meta name="twitter:card" content="summary_large_image">
   <script async src="https://www.googletagmanager.com/gtag/js?id=AW-1036488597"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','AW-1036488597');</script>
@@ -324,15 +331,16 @@
           </div>
         </div>
         <div style="height: clamp(2.5rem, 6vw, 4rem)"></div>
-        <p class="eyebrow eyebrow--center" style="margin-bottom:1.6rem">Trusted by</p>
-        <div class="clients-strip" data-reveal>
-          <span>The Library of Congress <i class="dot"></i></span>
-          <span>The British Embassy <i class="dot"></i></span>
-          <span>Embassy of France <i class="dot"></i></span>
-          <span>Washington Golf &amp; Country Club <i class="dot"></i></span>
-          <span>Hyatt Reston <i class="dot"></i></span>
-          <span>National PTA</span>
+        <p class="eyebrow eyebrow--center" style="margin-bottom:1.6rem; margin-inline:auto">Trusted by</p>
+        <div class="logo-strip" data-reveal>
+          <img src="assets/img/clients/library-of-congress.webp" alt="The Library of Congress" loading="lazy" width="156" height="170">
+          <img src="assets/img/clients/british-embassy.webp" alt="The British Embassy" loading="lazy" width="228" height="186">
+          <img src="assets/img/clients/french-embassy.webp" alt="Embassy of France" loading="lazy" width="400" height="234">
+          <img src="assets/img/clients/washington-golf-country-club.webp" alt="Washington Golf &amp; Country Club" loading="lazy" width="225" height="141">
+          <img src="assets/img/clients/hyatt-reston.webp" alt="Hyatt Reston" loading="lazy" width="222" height="100">
+          <img src="assets/img/clients/national-pta.webp" alt="National PTA" loading="lazy" width="360" height="200">
         </div>
+        <p class="footnote" style="margin-top:1.8rem; margin-inline:auto; max-width:60ch; text-align:center" data-reveal data-reveal-delay="1">Also the Environmental Protection Agency, Trump National Golf Club Washington, and the embassies of Washington — <a href="about.html#clients">the full register</a>.</p>
       </div>
     </section>
 
@@ -390,6 +398,7 @@
           <ul>
             <li><a href="about.html">Our Story</a></li>
             <li><a href="about.html#faq">FAQs</a></li>
+            <li><a href="trade.html">For the Trade</a></li>
             <li><a href="guides.html">The Workshop Journal</a></li>
             <li><a href="furniture-care.html">Furniture Care Guide</a></li>
             <li><a href="estimate.html">Free Estimate</a></li>
