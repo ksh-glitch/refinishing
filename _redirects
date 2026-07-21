@@ -1,6 +1,6 @@
 # Legacy URL map — refinishing.org redesign migration
 # Pages
-/index.html / 301
+/index.html / 301!
 /old-home-page.html / 301
 /door-restoration-washington-dc-va-md.html /doors.html 301
 /door-refinishing-washington-dc-va-md.html /doors.html 301
@@ -10,7 +10,7 @@
 /blog/angies-list-super-service-award /about.html 301
 /blog.html /furniture-care.html 301
 /blog /furniture-care.html 301
-/projects /projects.html 301
+/projects /projects.html 301!
 /projects/restoration-federal-style-antiques /projects.html#federal 301
 /projects/refinishing-dresser-vanity-dc-area /refinishing.html 301
 /projects/mclean-front-door-restoration /doors.html 301
