@@ -119,9 +119,29 @@
     slider.addEventListener('mousedown', startDrag);
     window.addEventListener('mousemove', moveDrag);
     window.addEventListener('mouseup', endDrag);
-    slider.addEventListener('touchstart', startDrag, { passive: false });
-    window.addEventListener('touchmove', moveDrag, { passive: true });
-    window.addEventListener('touchend', endDrag);
+
+    // Touch: lock to an axis so vertical swipes scroll the page normally
+    // and only deliberate horizontal drags move the seam.
+    var startX = 0, startY = 0, touchMode = null;
+    slider.addEventListener('touchstart', function (e) {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      touchMode = null;
+    }, { passive: true });
+    slider.addEventListener('touchmove', function (e) {
+      if (touchMode === 'scroll') return;
+      var dx = Math.abs(e.touches[0].clientX - startX);
+      var dy = Math.abs(e.touches[0].clientY - startY);
+      if (touchMode === null && (dx > 8 || dy > 8)) {
+        touchMode = dx > dy ? 'drag' : 'scroll';
+        if (touchMode === 'drag') slider.classList.add('is-dragging');
+      }
+      if (touchMode === 'drag') { fromEvent(e); e.preventDefault(); }
+    }, { passive: false });
+    slider.addEventListener('touchend', function () {
+      touchMode = null;
+      slider.classList.remove('is-dragging');
+    });
 
     input.addEventListener('input', function () { set(parseFloat(input.value)); });
     set(parseFloat(input.value) || 50);

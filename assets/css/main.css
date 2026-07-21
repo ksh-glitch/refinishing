@@ -361,6 +361,14 @@ body.nav-open .brand img,
   appearance: none;
 }
 .hero .ba-range { pointer-events: auto; }
+/* Touch devices: the invisible range would swallow vertical swipes —
+   let the slider's axis-locking touch handlers own the gesture instead.
+   (Keyboard/desktop interaction via the range is unaffected.) */
+@media (pointer: coarse) {
+  .ba-range { pointer-events: none; }
+  .hero .ba-range { pointer-events: none; }
+}
+
 
 /* Standalone (non-hero) sliders */
 .ba-frame { position: relative; }
