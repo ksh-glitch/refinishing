@@ -531,7 +531,7 @@ body.nav-open .brand img,
   display: flex;
   justify-content: center;
   align-items: baseline;
-  gap: 0.1em;
+  gap: 0.05em;
 }
 .section--dark .stat .value { color: var(--brass-soft); }
 .stat .value .suffix { font-size: 0.45em; color: var(--brass); }
@@ -1025,4 +1025,67 @@ body.nav-open .brand img,
 @media (max-width: 640px) {
   .specimen-strip { grid-template-columns: 1fr; }
   .specimen-strip img { aspect-ratio: 4 / 3; }
+}
+
+/* ============================================================
+   Mobile typography pass — tracking, wrapping, rhythm (≤480px)
+   Uppercase letterspaced UI tracks ~20–30% tighter at phone
+   sizes; folios/eyebrows wrap on purpose instead of mid-phrase;
+   display leading opens up; section rhythm evens out.
+   ============================================================ */
+@media (max-width: 480px) {
+  :root {
+    --section: clamp(4rem, 14vw, 5.5rem);
+  }
+
+  /* Display type: Fraunces stacks too tight at small clamp sizes */
+  h1, h2, h3, h4 { line-height: 1.12; letter-spacing: -0.01em; }
+  .section-head { margin-bottom: 2rem; }
+  .lead { line-height: 1.6; }
+  .intro-grid .dropcap::first-letter { font-size: 3em; padding-right: 0.1em; }
+
+  /* Eyebrows: tighter tracking, balanced two-line wraps, no orphans */
+  .eyebrow {
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    gap: 0.7rem;
+    text-wrap: balance;
+  }
+  .eyebrow::before, .eyebrow--center::after { width: 1.6rem; }
+
+  /* Folios: let chapter/note wrap as whole rows, not mid-phrase */
+  .folio {
+    font-size: 0.64rem;
+    letter-spacing: 0.13em;
+    flex-wrap: wrap;
+    gap: 0.35rem 1rem;
+    text-wrap: pretty;
+  }
+
+  /* Header brand: .32em tracking crowds the nav toggle at 375px */
+  .brand-name .bottom { font-size: 0.55rem; letter-spacing: 0.22em; }
+
+  /* Buttons: keep the label on one line on narrow phones */
+  .btn { font-size: 0.75rem; letter-spacing: 0.11em; padding: 1rem 1.5rem; }
+
+  /* Before/After labels */
+  .ba-label { letter-spacing: 0.16em; }
+
+  /* Attribution / meta lines: avoid one-word orphans ("VA") */
+  .quote-attr { font-size: 0.68rem; letter-spacing: 0.12em; text-wrap: balance; }
+  .cta-meta { font-size: 0.7rem; letter-spacing: 0.1em; line-height: 1.8; text-wrap: balance; }
+  .stat .label { letter-spacing: 0.13em; text-wrap: balance; }
+  .plate-caption { letter-spacing: 0.1em; }
+  .specimen-strip figcaption { letter-spacing: 0.14em; }
+  .tile .tile-label { letter-spacing: 0.12em; }
+
+  /* Process list: numeral column tightened for narrow measure */
+  .process-list li { grid-template-columns: 2.6rem 1fr; gap: 0.9rem; padding-block: 1.6rem; }
+  .process-list li::before { font-size: 1.7rem; }
+  .process-list h3 { font-size: 1.3rem; }
+
+  /* Colophon: keep the big number comfortably inside 320–480px,
+     pull the spaced dots in a touch */
+  .colophon-call .lead-in { font-size: 0.66rem; letter-spacing: 0.16em; }
+  .colophon-call .big-phone { font-size: clamp(2.3rem, 11.5vw, 2.7rem); word-spacing: -0.08em; }
 }
