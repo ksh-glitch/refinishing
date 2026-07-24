@@ -161,7 +161,8 @@ body.nav-open .brand img,
 .brand-name .top { font-family: var(--font-display); font-size: 1.06rem; font-weight: 500; letter-spacing: 0; }
 .brand-name .bottom { font-family: var(--font-ui); font-size: 0.58rem; font-weight: 600; letter-spacing: 0.32em; text-transform: uppercase; color: var(--brass-text); margin-top: 0.25rem; }
 
-.site-nav ul { display: flex; align-items: center; gap: clamp(1rem, 1.8vw, 1.8rem); list-style: none; margin: 0; padding: 0; }
+/* Top-level list only — the nested .nav-drop lists manage their own display */
+.site-nav > ul { display: flex; align-items: center; gap: clamp(1rem, 1.8vw, 1.8rem); list-style: none; margin: 0; padding: 0; }
 .site-nav a {
   white-space: nowrap;
   font-family: var(--font-ui);
@@ -286,7 +287,7 @@ body.nav-open .brand img,
     visibility: hidden;
     transition: opacity 0.35s var(--ease-out), visibility 0.35s;
   }
-  .site-nav ul { flex-direction: column; gap: 2rem; text-align: center; }
+  .site-nav > ul { flex-direction: column; gap: 2rem; text-align: center; }
   .site-nav a { color: var(--paper-on-dark) !important; font-size: 1rem; }
   body.nav-open .site-nav { opacity: 1; visibility: visible; }
   body.nav-open .nav-toggle span:nth-child(1) { transform: translateY(8px) rotate(45deg); background: var(--paper-on-dark); }
