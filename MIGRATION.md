@@ -7,7 +7,11 @@ page URLs resolve against the new site with no dead ends.
 
 ## What's already in place (in this repo)
 
-- `_redirects` — 96 rules, Netlify format (specific rules before wildcards)
+- `_redirects` — 102 rules, Netlify format (specific rules before wildcards; incl.
+  /services.html, /testpagearchive.html, /1/feed, the Angie's List award PDF and
+  an `/uploads/*` catch-all added after the 2026-07 live-crawl audit)
+- `netlify.toml` — Pretty URLs OFF (keeps .html canonical URLs), asset caching,
+  and a **pre-launch `X-Robots-Tag: noindex` header** for the dev host
 - `.htaccess` — the same map for Apache hosts
 - `redirects.csv` — human-readable documentation of every mapping
 - **Path continuity** — the highest-value URLs did not change at all:
@@ -22,30 +26,94 @@ page URLs resolve against the new site with no dead ends.
 - Performance: preloaded LCP hero images, width/height on images (no CLS),
   lazy-loading below the fold, `font-display: swap`
 
-## Cutover steps (in order)
+## Pre-cutover quality gate (run against dcantiques.netlify.app after each deploy)
 
-1. **Before switching DNS**: in Google Search Console, verify the property
-   for `www.refinishing.org` (and the domain property) if not already done.
-   Export current queries/rankings as a baseline.
-2. Deploy this folder to the new host (e.g. Netlify). Confirm the deploy
-   serves `_redirects` (test: `curl -I https://<preview>/testimonials.html`
-   → `301` → `/about.html#testimonials`).
-3. Set `www.refinishing.org` as the **primary domain**; ensure apex
-   `refinishing.org` 301s to `www` (Netlify does this automatically once the
-   primary domain is set). Old canonical was `www` — keep it.
-4. Force HTTPS.
-5. Switch DNS. Keep the Weebly site untouched until DNS has fully propagated.
-6. **Immediately after cutover**:
-   - Spot-check 10–15 legacy URLs from `redirects.csv` return 301 → 200.
-   - Submit `sitemap.xml` in Search Console.
-   - Use URL Inspection → Request indexing for `/`, the three service pages
-     and `/furniture-care.html`.
-7. **The following weeks**: watch Search Console → Coverage for 404 spikes
-   (any URL we missed shows up there — add a redirect rule and redeploy),
-   and Performance for position changes. Expect some churn for 2–4 weeks;
-   the 301s pass ranking signals.
-8. Update the Google Business Profile website link, Yelp, Facebook,
-   Instagram bio links if any of them point at deep pages.
+- `python3 tools/verify-build.py` locally (h1s, JSON-LD, links, titles, img dims)
+- Google Rich Results Test + Schema.org validator on: `/`, `/refinishing.html`,
+  `/antique-restoration.html`, `/projects/federal-style-collection.html`,
+  `/estimate.html` (works despite the pre-launch noindex header)
+- PageSpeed Insights, mobile — budget: performance ≥ 90, LCP < 2.5 s, CLS < 0.1
+- Manual passes: mobile nav + Services/Trade dropdowns on a phone; the
+  assessment form's five paths incl. photo upload; keyboard-only walk of the
+  lightbox (focus trap + focus restore) and both dropdowns
+
+## Cutover runbook
+
+### T-minus 2 days (owner + operator)
+
+1. **Search Console**: verify the `www.refinishing.org` URL-prefix property
+   AND the `refinishing.org` domain property (DNS TXT). Export current
+   queries/pages as the ranking baseline. (Same host + same URLs = a platform
+   swap, NOT a site move — do **not** use the Change of Address tool.)
+2. **DNS inventory**: at the current DNS host (likely Weebly-managed), export
+   every record — especially **MX and any TXT/SPF/DKIM for info@ and
+   estimates@ email**. These must be re-created exactly wherever DNS ends up.
+   Breaking email is the worst possible cutover failure.
+3. **Lower DNS TTLs to 300s** on the A/CNAME records for refinishing.org and
+   www, so a rollback takes minutes rather than hours.
+4. **Netlify Forms**: enable form detection on project `dcantiques`, redeploy,
+   and send one test through the estimate form (with a photo — confirm it
+   arrives and lands on `/thanks.html`) and one through the newsletter form
+   (→ `/subscribed.html`). Submissions are silently discarded until this is
+   done (MIGRATION-PROOF.md §3).
+5. **Ads conversion**: create the estimate conversion in Google Ads and paste
+   the real label into `thanks.html` (currently a commented placeholder).
+6. Run the full pre-cutover quality gate above, plus:
+   `npm run verify:redirects` (against dcantiques.netlify.app) → must be
+   **PASS on every row** after the latest deploy.
+
+### Cutover day (in order)
+
+7. In Netlify: add custom domains `refinishing.org` + `www.refinishing.org`;
+   set **www as primary** (old canonical was www — keep it; apex then 301s
+   to www automatically). Verify the exact DNS targets Netlify shows in the
+   dashboard — use those values, not documentation from memory.
+8. At the DNS host: point `www` (CNAME) and the apex (A/ALIAS) at the values
+   from step 7. Recreate the MX/TXT records from step 2 if DNS is moving hosts.
+9. Wait for certificate provisioning; Force HTTPS.
+10. **Deploy the noindex removal**: delete the `X-Robots-Tag = "noindex"`
+    header block from `netlify.toml` in a single-purpose commit and deploy.
+    The real domain must never serve noindex.
+11. Validate, in this order:
+    ```
+    python3 tools/verify-redirects.py https://www.refinishing.org
+    curl -sI https://refinishing.org/            # expect 301 → https://www
+    curl -sI http://www.refinishing.org/         # expect 301 → https
+    curl -sI https://www.refinishing.org/ | grep -i x-robots   # expect NOTHING
+    ```
+    Then hand-check the crown jewels: `/old-home-page.html`, both legacy door
+    URLs, `/testimonials.html`, `/projects/restoration-federal-style-antiques`,
+    one `/uploads/...` image.
+12. **Search Console, same day**: submit `sitemap.xml`; URL-Inspect →
+    Request indexing for `/`, `/refinishing.html`, `/antique-restoration.html`,
+    `/doors.html`, `/estimate.html`, `/furniture-care.html`.
+13. Update website links on: Google Business Profile, Yelp, Angi, Facebook,
+    Instagram bio, Houzz (https://www.houzz.com/pro/afrdc), Nextdoor —
+    especially any that point at deep pages.
+
+### Weeks 1–4: monitoring
+
+- **Daily, week 1**: Search Console → Pages (404 spikes = a missed URL; add a
+  redirect row to `_redirects` + `redirects.csv` + `.htaccess`, redeploy);
+  Netlify Forms submissions arriving; GA4 realtime shows traffic on
+  G-H890QYMC8J.
+- **Weekly**: GSC Performance vs the exported baseline (expect churn for 2–4
+  weeks; 301s carry the signals); Crawl Stats for anomalies; rankings on the
+  watchlist queries (furniture restoration/refinishing washington dc, antique
+  restoration maryland/virginia, historic door restoration dc, french
+  polishing washington dc).
+- Keep the Weebly subscription (and its DNS export) for **at least 30 days**.
+
+### Rollback
+
+Trigger: site down/misrouted, email broken, forms not delivering and not
+fixable same-day, or a security/DNS mistake. (Do NOT roll back for normal
+ranking churn in weeks 1–2.)
+
+1. Repoint DNS to the saved Weebly values (TTL 300 → minutes to take effect).
+2. Re-add the `X-Robots-Tag = "noindex"` block to `netlify.toml` and deploy,
+   so the dev host goes back to being non-indexable.
+3. Diagnose, fix, re-run this runbook from step 6.
 
 ## Why rankings should improve, not just survive
 

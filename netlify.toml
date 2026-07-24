@@ -1,0 +1,42 @@
+# Netlify configuration — refinishing.org redesign
+# (deploy config of record; dashboard settings should not override this)
+
+[build]
+  command = "npm run build"
+  publish = "_site"
+
+# Serve HTML exactly as authored: canonicals, sitemap, og:url and JSON-LD all
+# reference .html URLs, so Pretty URLs must stay OFF to avoid every page
+# existing at two URLs with conflicting signals.
+[build.processing]
+  skip_processing = false
+[build.processing.html]
+  pretty_urls = false
+[build.processing.css]
+  bundle = false
+  minify = false
+[build.processing.js]
+  bundle = false
+  minify = false
+[build.processing.images]
+  compress = false
+
+# ──────────────────────────────────────────────────────────────────────────
+# PRE-LAUNCH ONLY: keep the dev host (dcantiques.netlify.app) out of the
+# index. The cross-domain canonicals are not enough — several canonical
+# targets 404 on the still-live Weebly site, so Google may ignore them.
+#
+# ⚠ CUTOVER STEP (MIGRATION.md step 4a): DELETE this X-Robots-Tag header
+# block in the same deploy that attaches the refinishing.org domain.
+# The real domain must never serve noindex.
+# ──────────────────────────────────────────────────────────────────────────
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"
+
+# Long-cache immutable static assets (filenames change when content changes).
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

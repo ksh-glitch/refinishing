@@ -16,6 +16,7 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'AW-1036488597');
+    gtag('config', 'G-H890QYMC8J');
     /* Estimate-request conversion — DISABLED until the real conversion label
        is pasted in from Google Ads → Goals → Conversions (format:
        AW-1036488597/AbC-D_efGhIjKlMnOp). Uncomment after replacing the
@@ -29,7 +30,26 @@
       <div class="container">
         <p class="eyebrow">Request received</p>
         <h1 class="section-title">It&rsquo;s on the <em>bench list.</em></h1>
-        <p class="lead">Thank you — your estimate request is in. We&rsquo;ll come back to you quickly with an honest quote. If it&rsquo;s urgent, call <a href="tel:7034377446">703-437-7446</a>.</p>
+        <p class="lead" id="thanks-lead">Thank you — your assessment request is in. We&rsquo;ll come back to you quickly with an honest answer. If it&rsquo;s urgent, call <a href="tel:7034377446">703-437-7446</a>.</p>
+        <script>
+          (function () {
+            var m = window.location.search.match(/[?&]type=(trade|commercial|insurance|government)/);
+            if (typeof window.gtag === 'function') {
+              window.gtag('event', 'form_submit_complete', { inquiry_type: m ? m[1] : 'residential' });
+            }
+            if (!m) return;
+            var lead = document.getElementById('thanks-lead');
+            var copy = {
+              trade: 'Thank you — your trade inquiry is in. Designer and trade requests go to the front of the reply queue; expect to hear from the workshop directly. If the install date is close, call ',
+              commercial: 'Thank you — your commercial inquiry is in. We’ll reply with next steps for scoping the project, including a site visit where it helps. To talk it through sooner, call ',
+              insurance: 'Thank you — your claim inquiry is in. We’ll reply with what we need to document the damage for your adjuster. If the piece is wet or smoke-exposed, don’t wait on us — call ',
+              government: 'Thank you — your procurement inquiry is in. We’ll reply with our capability information and next steps. For time-sensitive solicitations, call '
+            };
+            if (lead && copy[m[1]]) {
+              lead.innerHTML = copy[m[1]] + '<a href="tel:7034377446">703-437-7446</a>.';
+            }
+          })();
+        </script>
         <div style="margin-top:2rem; display:flex; gap:1rem; flex-wrap:wrap">
           <a class="btn btn--primary" href="/">Back to the front page <span class="arrow">→</span></a>
           <a class="btn btn--ghost" href="/furniture-care.html">Read the care guide</a>

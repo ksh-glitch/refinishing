@@ -38,6 +38,35 @@
     });
   }
 
+  /* ---------------- Services dropdown ----------------
+     Desktop hover/focus opening is pure CSS; the click toggle serves
+     touch devices and keyboard users. */
+  document.querySelectorAll('.nav-group').forEach(function (group) {
+    var btn = group.querySelector('.nav-drop-toggle');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var open = group.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+  document.addEventListener('click', function (e) {
+    document.querySelectorAll('.nav-group.is-open').forEach(function (group) {
+      if (!group.contains(e.target)) {
+        group.classList.remove('is-open');
+        group.querySelector('.nav-drop-toggle').setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.nav-group.is-open').forEach(function (group) {
+      group.classList.remove('is-open');
+      var b = group.querySelector('.nav-drop-toggle');
+      b.setAttribute('aria-expanded', 'false');
+      b.focus();
+    });
+  });
+
   /* ---------------- Reveal on scroll ---------------- */
   var revealEls = document.querySelectorAll('[data-reveal]');
   if (revealEls.length && 'IntersectionObserver' in window && !prefersReduced) {
@@ -195,6 +224,7 @@
     var lbImg = lb.querySelector('img');
     var lbCap = lb.querySelector('figcaption');
     var idx = 0;
+    var lastTrigger = null;
     var visibleLinks = function () {
       return lbLinks.filter(function (a) { return !a.closest('.is-hidden'); });
     };
@@ -212,11 +242,13 @@
       lb.classList.remove('is-open');
       document.body.style.overflow = '';
       lbImg.src = '';
+      if (lastTrigger) { lastTrigger.focus(); lastTrigger = null; }
     };
 
     lbLinks.forEach(function (a) {
       a.addEventListener('click', function (e) {
         e.preventDefault();
+        lastTrigger = a;
         var links = visibleLinks();
         openAt(links, links.indexOf(a));
       });
@@ -230,6 +262,19 @@
       if (e.key === 'Escape') close();
       if (e.key === 'ArrowLeft') openAt(visibleLinks(), idx - 1);
       if (e.key === 'ArrowRight') openAt(visibleLinks(), idx + 1);
+      if (e.key === 'Tab') {
+        // Keep focus cycling inside the dialog.
+        var focusables = lb.querySelectorAll('button');
+        var first = focusables[0];
+        var last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault(); last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault(); first.focus();
+        } else if (!lb.contains(document.activeElement)) {
+          e.preventDefault(); first.focus();
+        }
+      }
     });
   }
 
@@ -237,4 +282,64 @@
   document.querySelectorAll('[data-year]').forEach(function (el) {
     el.textContent = new Date().getFullYear();
   });
+
+  /* ---------------- Analytics events (GA4, no-op if gtag absent) ---------------- */
+  var track = function (name, params) {
+    if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+  };
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var h = a.getAttribute('href') || '';
+    if (h.indexOf('tel:') === 0) track('phone_click');
+    else if (h.indexOf('mailto:') === 0) track('email_click');
+    else if (h.indexOf('g.page') !== -1 || h.indexOf('google.com/maps') !== -1) track('directions_click');
+  });
+
+  /* ---------------- Assessment form: audience paths ---------------- */
+  var form = document.querySelector('form[name="estimate"]');
+  if (form) {
+    var typeSel = form.querySelector('#inquiry-type');
+    var pathFields = form.querySelectorAll('[data-path]');
+    var photo1 = form.querySelector('input[name="photo-1"]');
+    var photosHint = form.querySelector('#photos-hint');
+
+    var applyPath = function (t) {
+      pathFields.forEach(function (el) {
+        el.hidden = el.getAttribute('data-path').split(' ').indexOf(t) === -1;
+      });
+      // Photographs are required for residential & trade; for claims,
+      // commercial and procurement inquiries documents may substitute.
+      if (photo1) photo1.required = (t === 'residential' || t === 'trade');
+      if (photosHint) {
+        photosHint.firstChild.textContent = (photo1 && photo1.required)
+          ? 'At least one photograph, please — ordinary phone snapshots are perfect. An overall view first, then the damage up close. For large files or supporting documents (claims, schedules, solicitations), email '
+          : 'Photographs help us respond precisely — attach what you have. For large files or supporting documents (claims, schedules, solicitations), email ';
+      }
+      // Carry the path to the confirmation page.
+      form.setAttribute('action', '/thanks.html?type=' + encodeURIComponent(t));
+    };
+
+    if (typeSel) {
+      // Links from trade/commercial/insurance pages preselect their path.
+      var m = window.location.search.match(/[?&]type=(residential|trade|commercial|insurance|government)/);
+      if (m) typeSel.value = m[1];
+      applyPath(typeSel.value);
+      typeSel.addEventListener('change', function () {
+        applyPath(typeSel.value);
+        track('path_selected', { inquiry_type: typeSel.value });
+      });
+    }
+
+    var started = false;
+    form.addEventListener('input', function () {
+      if (!started) { started = true; track('form_start'); }
+    });
+    form.addEventListener('change', function (e) {
+      if (e.target.type === 'file' && e.target.files && e.target.files.length) track('photo_added');
+    });
+    form.addEventListener('submit', function () {
+      track('form_submit', { inquiry_type: typeSel ? typeSel.value : 'unknown' });
+    });
+  }
 })();

@@ -1,0 +1,16 @@
+{
+  "name": "refinishing-org",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Antiques & Furniture Restoration Inc — refinishing.org (Eleventy static build)",
+  "scripts": {
+    "build": "eleventy && npm run build:static",
+    "build:static": "rm -rf _site/assets && cp -R assets _site/assets && cp _redirects robots.txt sitemap.xml .htaccess redirects.csv 404.html thanks.html subscribed.html _site/ && mkdir -p _site/newsletter && cp newsletter/issue-01.html _site/newsletter/",
+    "serve": "eleventy --serve",
+    "verify": "python3 tools/verify-build.py",
+    "verify:redirects": "python3 tools/verify-redirects.py"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0"
+  }
+}

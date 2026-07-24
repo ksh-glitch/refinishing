@@ -15,15 +15,25 @@ A complete, hand-built static redesign of https://www.refinishing.org/ ("Catalog
 
 ## Stack
 
-Pure static HTML/CSS/JS — no frameworks, no build step. Shared styles in
-`assets/css/main.css` (design tokens at the top), behaviors in `assets/js/main.js`
-(seam slider, lightbox, filters, reveals — all progressive enhancement).
+Static HTML built with **Eleventy** (v3). Page sources live in `src/` as plain
+HTML with JSON front matter; the shared chrome (head boilerplate, header/nav,
+footer) lives once in `src/_includes/{base,header,footer}.njk`. Output is
+byte-equivalent static HTML in `_site/` (`tools/verify-build.py` proves parity
+against the pre-Eleventy pages). Shared styles in `assets/css/main.css`
+(design tokens at the top), behaviors in `assets/js/main.js` (seam slider,
+lightbox, filters, reveals — all progressive enhancement).
 Fonts: Fraunces, Source Serif 4, Archivo via Google Fonts.
+
+⚠ **Edit pages in `src/` only.** The legacy root `*.html` pages are frozen
+copies kept for diff review and are NOT deployed (Netlify publishes `_site/`).
+Remove them once the Eleventy switch is committed.
 
 ## Run locally
 
 ```
-python3 -m http.server 8734
+npm install
+npm run build          # eleventy + static copy → _site/
+python3 -m http.server 8788 --directory _site
 ```
 
 ## Imagery

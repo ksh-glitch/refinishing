@@ -1,0 +1,43 @@
+<header class="site-header{% if headerOnDark %} header-on-dark{% endif %}">
+    <div class="container">
+      <a class="brand" href="/" aria-label="Antiques & Furniture Restoration Inc — home">
+        <img src="/assets/img/logo-emblem-nav.png" alt="" width="112" height="80">
+        <span class="brand-name">
+          <span class="top">Antiques &amp; Furniture</span>
+          <span class="bottom">Restoration · Est. 1991</span>
+        </span>
+      </a>
+      <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="site-nav">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <ul>
+          <li class="nav-group">
+            <button class="nav-drop-toggle" type="button" aria-expanded="false" aria-controls="nav-services">Services<span class="caret" aria-hidden="true">▾</span></button>
+            <ul class="nav-drop" id="nav-services">
+              <li><a href="/refinishing.html"{% if navKey == "refinishing" %} aria-current="page"{% endif %}>Furniture Refinishing</a></li>
+              <li><a href="/antique-restoration.html"{% if navKey == "antique-restoration" %} aria-current="page"{% endif %}>Antique Restoration</a></li>
+              <li><a href="/upholstery.html"{% if navKey == "upholstery" %} aria-current="page"{% endif %}>Fine Upholstery</a></li>
+              <li><a href="/doors.html"{% if navKey == "doors" %} aria-current="page"{% endif %}>Door Restoration</a></li>
+              <li><a href="/architectural-woodwork.html"{% if navKey == "architectural-woodwork" %} aria-current="page"{% endif %}>Architectural Woodwork</a></li>
+              <li><a href="/french-polish.html"{% if navKey == "french-polish" %} aria-current="page"{% endif %}>French Polishing</a></li>
+              <li><a href="/damage-restoration.html"{% if navKey == "damage-restoration" %} aria-current="page"{% endif %}>Insurance &amp; Damage</a></li>
+            </ul>
+          </li>
+          <li><a href="/projects.html"{% if navKey == "projects" %} aria-current="page"{% endif %}>Projects</a></li>
+          <li><a href="/gallery.html"{% if navKey == "gallery" %} aria-current="page"{% endif %}>Gallery</a></li>
+          <li class="nav-group">
+            <button class="nav-drop-toggle" type="button" aria-expanded="false" aria-controls="nav-trade">For the Trade<span class="caret" aria-hidden="true">▾</span></button>
+            <ul class="nav-drop" id="nav-trade">
+              <li><a href="/trade.html"{% if navKey == "trade" %} aria-current="page"{% endif %}>For Designers</a></li>
+              <li><a href="/commercial.html"{% if navKey == "commercial" %} aria-current="page"{% endif %}>Commercial &amp; Hospitality</a></li>
+              <li><a href="/commissions.html"{% if navKey == "commissions" %} aria-current="page"{% endif %}>Notable Commissions</a></li>
+              <li><a href="/damage-restoration.html#adjusters">For Insurance Adjusters</a></li>
+            </ul>
+          </li>
+          <li><a href="/about.html"{% if navKey == "about" %} aria-current="page"{% endif %}>About</a></li>
+          <li class="nav-cta"><a href="/estimate.html"{% if navKey == "estimate" %} aria-current="page"{% endif %}>Request an Assessment</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
