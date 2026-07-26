@@ -1097,6 +1097,9 @@ body.nav-open .brand img,
 .specimen-strip.pair { grid-template-columns: repeat(2, 1fr); }
 .specimen-strip figure { margin: 0; }
 .specimen-strip img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+/* Landscape sources: 4/5 crops a wide shot down to a centre slice. Opt in
+   where the photographs are landscape so the frame stays close to the original. */
+.specimen-strip.landscape img { aspect-ratio: 4 / 3; }
 .specimen-strip figcaption {
   font-family: var(--font-ui);
   font-size: 0.62rem;
