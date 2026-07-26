@@ -294,6 +294,12 @@
     if (h.indexOf('tel:') === 0) track('phone_click');
     else if (h.indexOf('mailto:') === 0) track('email_click');
     else if (h.indexOf('g.page') !== -1 || h.indexOf('google.com/maps') !== -1) track('directions_click');
+    else if (a.hasAttribute('data-affiliate') || h.indexOf('amazon.com') !== -1 || h.indexOf('amzn.to') !== -1) {
+      track('affiliate_click', {
+        product: a.getAttribute('data-affiliate') || a.textContent.trim().slice(0, 60),
+        page: window.location.pathname
+      });
+    }
   });
 
   /* ---------------- Assessment form: audience paths ---------------- */
