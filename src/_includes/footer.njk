@@ -14,7 +14,7 @@
           <form name="newsletter" method="POST" data-netlify="true" action="/subscribed.html" style="margin-top:1.4rem; display:flex; gap:0.5rem; max-width:340px">
             <input type="hidden" name="form-name" value="newsletter">
             <label for="nl-email" class="eyebrow" style="position:absolute; left:-9999px">Email for the workshop letter</label>
-            <input id="nl-email" type="email" name="email" required placeholder="Your email address"
+            <input id="nl-email" type="email" name="email" required autocomplete="email" placeholder="Your email address"
                    style="flex:1; font-family:var(--font-body); font-size:1rem; background:transparent; border:1px solid rgba(241,234,216,0.35); color:var(--paper-on-dark); padding:0.6rem 0.8rem">
             <button class="btn btn--on-dark" type="submit" style="padding:0.6rem 1rem">Join</button>
           </form>
@@ -41,7 +41,7 @@
             <li><a href="/guides.html">The Workshop Journal</a></li>
             <li><a href="/furniture-care.html">Furniture Care Guide</a></li>
             <li><a href="/furniture-care-kit.html">The Care Kit</a></li>
-            <li><a href="/estimate.html">Request an Assessment</a></li>
+            <li><a href="/estimate.html#form">Request an Assessment</a></li>
           </ul>
         </div>
         <div class="footer-col">

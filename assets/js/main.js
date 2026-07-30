@@ -309,6 +309,7 @@
     var pathFields = form.querySelectorAll('[data-path]');
     var photo1 = form.querySelector('input[name="photo-1"]');
     var photosHint = form.querySelector('#photos-hint');
+    var photosReq = document.getElementById('photos-req');
 
     var applyPath = function (t) {
       pathFields.forEach(function (el) {
@@ -317,6 +318,7 @@
       // Photographs are required for residential & trade; for claims,
       // commercial and procurement inquiries documents may substitute.
       if (photo1) photo1.required = (t === 'residential' || t === 'trade');
+      if (photosReq) photosReq.hidden = !(photo1 && photo1.required);
       if (photosHint) {
         photosHint.firstChild.textContent = (photo1 && photo1.required)
           ? 'At least one photograph, please — ordinary phone snapshots are perfect. An overall view first, then the damage up close. For large files or supporting documents (claims, schedules, solicitations), email '
@@ -335,6 +337,20 @@
         applyPath(typeSel.value);
         track('path_selected', { inquiry_type: typeSel.value });
       });
+    }
+
+    // A caller who asks for a reply by phone must leave a number.
+    var phoneInput = form.querySelector('#phone');
+    var prefSel = form.querySelector('#contact-preference');
+    var phoneReq = document.getElementById('phone-req');
+    var applyPref = function () {
+      var needPhone = !!(prefSel && prefSel.value === 'Phone');
+      if (phoneInput) phoneInput.required = needPhone;
+      if (phoneReq) phoneReq.hidden = !needPhone;
+    };
+    if (prefSel) {
+      applyPref();
+      prefSel.addEventListener('change', applyPref);
     }
 
     var started = false;

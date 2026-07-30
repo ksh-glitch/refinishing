@@ -72,7 +72,14 @@ body {
 img { max-width: 100%; height: auto; display: block; }
 a { color: var(--garnet); text-decoration-color: color-mix(in srgb, var(--garnet) 35%, transparent); text-underline-offset: 3px; }
 a:hover { color: var(--garnet-deep); text-decoration-color: currentColor; }
-:focus-visible { outline: 2px solid var(--garnet); outline-offset: 3px; border-radius: 1px; }
+/* Two-tone ring: the paper halo keeps the garnet outline visible on dark
+   grounds and on the garnet buttons themselves (WCAG 1.4.11). */
+:focus-visible {
+  outline: 2px solid var(--garnet);
+  outline-offset: 3px;
+  border-radius: 1px;
+  box-shadow: 0 0 0 5px var(--paper);
+}
 
 h1, h2, h3, h4 {
   font-family: var(--font-display);
@@ -93,7 +100,7 @@ p { margin: 0 0 1.25em; max-width: var(--measure); }
 /* ---------- Utility voice (eyebrows, labels) ---------- */
 .eyebrow {
   font-family: var(--font-ui);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -159,7 +166,7 @@ body.nav-open .brand img,
 .site-footer .brand img { filter: brightness(0) invert(0.94); }
 .brand-name { display: flex; flex-direction: column; line-height: 1.1; }
 .brand-name .top { font-family: var(--font-display); font-size: 1.06rem; font-weight: 500; letter-spacing: 0; }
-.brand-name .bottom { font-family: var(--font-ui); font-size: 0.58rem; font-weight: 600; letter-spacing: 0.32em; text-transform: uppercase; color: var(--brass-text); margin-top: 0.25rem; }
+.brand-name .bottom { font-family: var(--font-ui); font-size: 0.6rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--brass-text); margin-top: 0.25rem; white-space: nowrap; }
 
 /* Top-level list only — the nested .nav-drop lists manage their own display */
 .site-nav > ul { display: flex; align-items: center; gap: clamp(1rem, 1.8vw, 1.8rem); list-style: none; margin: 0; padding: 0; }
@@ -172,7 +179,8 @@ body.nav-open .brand img,
   text-transform: uppercase;
   text-decoration: none;
   color: var(--ink);
-  padding-block: 0.4rem;
+  display: inline-block;
+  padding-block: 0.7rem;
   position: relative;
 }
 .site-nav a::after {
@@ -216,7 +224,7 @@ body.nav-open .brand img,
   border: none;
   cursor: pointer;
   color: var(--ink);
-  padding-block: 0.4rem;
+  padding-block: 0.7rem;
   padding-inline: 0;
   display: inline-flex;
   align-items: center;
@@ -243,8 +251,18 @@ body.nav-open .brand img,
 @media (hover: hover) and (min-width: 1241px) {
   .nav-group:hover .nav-drop,
   .nav-group:focus-within .nav-drop { display: block; }
+  /* Bridge the visual gap between toggle and panel so a slow or shaky
+     diagonal from one to the other never leaves the hover area. */
+  .nav-drop::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -0.7rem;
+    height: 0.7rem;
+  }
 }
-.nav-drop a { display: block; padding: 0.55rem 1.3rem; }
+.nav-drop a { display: block; padding: 0.8rem 1.3rem; }
 .nav-drop a::after { display: none; }
 
 /* Header over dark hero */
@@ -270,7 +288,7 @@ body.nav-open .brand img,
     position: static;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.1rem;
     min-width: 0;
     padding: 0;
     background: transparent;
@@ -282,13 +300,19 @@ body.nav-open .brand img,
     inset: 0;
     background: var(--dark);
     display: grid;
-    place-items: center;
+    justify-items: center;
+    align-content: start;
+    /* The flattened menu is taller than a phone screen (and a laptop at
+       200% zoom) — it must scroll, or the last items are unreachable. */
+    overflow-y: auto;
+    padding-block: 5.5rem 3rem;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.35s var(--ease-out), visibility 0.35s;
   }
-  .site-nav > ul { flex-direction: column; gap: 2rem; text-align: center; }
-  .site-nav a { color: var(--paper-on-dark) !important; font-size: 1rem; }
+  .site-nav > ul { flex-direction: column; gap: 1.1rem; text-align: center; }
+  .site-nav a { color: var(--paper-on-dark) !important; font-size: 1rem; padding-block: 0.35rem; }
+  .site-nav .nav-call { order: -1; }
   body.nav-open .site-nav { opacity: 1; visibility: visible; }
   body.nav-open .nav-toggle span:nth-child(1) { transform: translateY(8px) rotate(45deg); background: var(--paper-on-dark); }
   body.nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
@@ -345,7 +369,7 @@ body.nav-open .brand img,
   bottom: clamp(3rem, 8vh, 6rem);
   z-index: 2;
   font-family: var(--font-ui);
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: rgba(241, 232, 216, 0.6);
@@ -405,9 +429,9 @@ body.nav-open .brand img,
   bottom: 1.2rem;
   z-index: 3;
   font-family: var(--font-ui);
-  font-size: 0.62rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgba(243, 233, 215, 0.85);
   background: rgba(28, 19, 12, 0.45);
@@ -473,7 +497,7 @@ body.nav-open .brand img,
   align-items: baseline;
   margin-top: 1rem;
   font-family: var(--font-ui);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--taupe);
@@ -538,9 +562,9 @@ body.nav-open .brand img,
 }
 .service-card .kicker {
   font-family: var(--font-ui);
-  font-size: 0.62rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--brass-soft);
   text-shadow: 0 1px 6px rgba(20, 12, 6, 0.65);
@@ -549,7 +573,7 @@ body.nav-open .brand img,
 .service-card p { font-size: 0.98rem; color: rgba(241, 232, 216, 0.82); margin: 0 0 1rem; }
 .service-card .faux-link {
   font-family: var(--font-ui);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -564,10 +588,10 @@ body.nav-open .brand img,
 /* ---------- Audience doors (home) ---------- */
 .doors-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr)); gap: clamp(1.4rem, 3vw, 2.4rem); }
 .door-card { display: flex; flex-direction: column; text-decoration: none; color: var(--ink); border-top: 1px solid var(--brass); padding-top: 1.1rem; }
-.door-card .kicker { font-family: var(--font-ui); font-size: 0.64rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--taupe); }
+.door-card .kicker { font-family: var(--font-ui); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--taupe); }
 .door-card h3 { font-size: 1.4rem; margin: 0.5rem 0 0.45rem; transition: color 0.25s var(--ease-out); }
 .door-card p { font-size: 0.96rem; color: var(--walnut); margin: 0 0 0.9rem; }
-.door-card .faux-link { margin-top: auto; font-family: var(--font-ui); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--garnet); display: inline-flex; align-items: center; gap: 0.5rem; transition: gap 0.25s var(--ease-out); }
+.door-card .faux-link { margin-top: auto; font-family: var(--font-ui); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--garnet); display: inline-flex; align-items: center; gap: 0.5rem; transition: gap 0.25s var(--ease-out); }
 .door-card:hover h3 { color: var(--garnet); }
 .door-card:hover .faux-link { gap: 0.9rem; }
 
@@ -616,7 +640,7 @@ body.nav-open .brand img,
 .stat .value .suffix { font-size: 0.45em; color: var(--brass-text); }
 .stat .label {
   font-family: var(--font-ui);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -648,7 +672,7 @@ body.nav-open .brand img,
   line-height: 1.35;
   letter-spacing: -0.01em;
 }
-.quote-attr { font-family: var(--font-ui); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--taupe); }
+.quote-attr { font-family: var(--font-ui); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--taupe); }
 .quote-feature .quote-attr, .cta-band p, .manifesto p { margin-inline: auto; }
 .quote-attr .place { color: var(--brass-text); }
 
@@ -691,8 +715,8 @@ body.nav-open .brand img,
 .cta-band .section-title { margin-inline: auto; }
 .cta-band .lead { margin-inline: auto; margin-bottom: 2.4rem; }
 .cta-meta { margin-top: 2.2rem; font-family: var(--font-ui); font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(241, 232, 216, 0.72); max-width: none; }
-.cta-meta a { color: var(--brass-soft-text); text-decoration: none; }
-.cta-meta a:hover { color: #fdf9f0; }
+.cta-meta a { color: var(--brass-soft-text); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--brass-soft-text) 55%, transparent); text-underline-offset: 3px; }
+.cta-meta a:hover { color: #fdf9f0; text-decoration-color: currentColor; }
 
 /* ---------- Footer ---------- */
 .site-footer { background: var(--dark); color: rgba(241, 232, 216, 0.78); padding-block: clamp(3.5rem, 7vw, 5.5rem) 2rem; font-size: 0.95rem; }
@@ -700,12 +724,14 @@ body.nav-open .brand img,
 .site-footer .brand { color: var(--paper-on-dark); margin-bottom: 1.2rem; }
 .site-footer .brand-name .bottom { color: var(--brass-soft-text); }
 .footer-tagline { max-width: 34ch; font-style: italic; font-size: 1.05rem; color: rgba(241, 232, 216, 0.75); }
-.footer-social a { color: rgba(241, 234, 216, 0.8); text-decoration: none; display: inline-block; padding: 0.85rem 0.35rem; margin: -0.45rem -0.15rem; }
+.footer-social a { color: rgba(241, 234, 216, 0.8); text-decoration: none; display: inline-block; padding: 0.85rem 0.55rem; margin: -0.45rem -0.15rem; }
 .footer-social a:hover { color: #fdf9f0; text-decoration: underline; }
-.footer-col h4, .footer-col .footer-h { font-family: var(--font-ui); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brass-soft-text); margin: 0 0 1.2rem; }
+.footer-col h4, .footer-col .footer-h { font-family: var(--font-ui); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--brass-soft-text); margin: 0 0 1.2rem; }
 .footer-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.65rem; }
 .footer-col a { color: rgba(241, 232, 216, 0.78); text-decoration: none; }
 .footer-col a:hover { color: #fdf9f0; }
+/* In-sentence links (address phone/email) need a non-color affordance */
+.footer-col address a { text-decoration: underline; text-decoration-color: rgba(241, 232, 216, 0.45); text-underline-offset: 3px; }
 .footer-col address { font-style: normal; line-height: 1.7; }
 .footer-bottom {
   display: flex;
@@ -714,7 +740,7 @@ body.nav-open .brand img,
   gap: 1rem;
   padding-top: 1.8rem;
   font-family: var(--font-ui);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(241, 232, 216, 0.7);
@@ -784,7 +810,7 @@ body.nav-open .brand img,
 .filter-bar { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 2.5rem; }
 .filter-bar button {
   font-family: var(--font-ui);
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -812,7 +838,7 @@ body.nav-open .brand img,
   background: linear-gradient(to top, rgba(20, 12, 6, 0.75), transparent);
   color: rgba(241, 232, 216, 0.92);
   font-family: var(--font-ui);
-  font-size: 0.66rem;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -838,7 +864,7 @@ body.nav-open .brand img,
 .lightbox.is-open { opacity: 1; visibility: visible; }
 .lightbox figure { margin: 0; max-width: min(88vw, 1100px); max-height: 84vh; display: grid; gap: 0.9rem; }
 .lightbox img { max-width: 100%; max-height: 76vh; width: auto; height: auto; margin-inline: auto; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5); }
-.lightbox figcaption { text-align: center; font-family: var(--font-ui); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(241, 232, 216, 0.7); }
+.lightbox figcaption { text-align: center; font-family: var(--font-ui); font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(241, 232, 216, 0.7); }
 .lightbox button {
   position: absolute;
   background: none;
@@ -864,9 +890,9 @@ body.nav-open .brand img,
 .case { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: center; padding-block: clamp(2.5rem, 6vw, 4.5rem); }
 .case + .case { border-top: 1px solid var(--hairline); }
 .case:nth-child(even) .case-media { order: 2; }
-.case-kicker { font-family: var(--font-ui); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--brass-text); margin-bottom: 0.9rem; }
+.case-kicker { font-family: var(--font-ui); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--brass-text); margin-bottom: 0.9rem; }
 .case h3 { font-size: clamp(1.7rem, 3vw, 2.3rem); }
-.case .meta { font-family: var(--font-ui); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--taupe); display: flex; gap: 1.4rem; flex-wrap: wrap; margin-top: 1.4rem; }
+.case .meta { font-family: var(--font-ui); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--taupe); display: flex; gap: 1.4rem; flex-wrap: wrap; margin-top: 1.4rem; }
 @media (max-width: 860px) { .case { grid-template-columns: 1fr; } .case:nth-child(even) .case-media { order: 0; } }
 
 /* ---------- Forms ---------- */
@@ -876,20 +902,24 @@ body.nav-open .brand img,
 .field label {
   display: block;
   font-family: var(--font-ui);
-  font-size: 0.68rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--walnut);
   margin-bottom: 0.5rem;
 }
+.field label .req { color: var(--garnet); text-transform: none; letter-spacing: 0.02em; font-weight: 500; }
+.field label .opt { color: var(--taupe); text-transform: none; letter-spacing: 0.02em; font-weight: 400; }
+.field input[type="file"] + label { margin-top: 0.8rem; }
 .field input, .field select, .field textarea {
   width: 100%;
   font-family: var(--font-body);
   font-size: 1.05rem;
   color: var(--ink);
-  background: var(--paper);
-  border: 1px solid var(--hairline);
+  /* Fill + border must read as a box against the gesso ground (WCAG 1.4.11) */
+  background: #fffdf7;
+  border: 1px solid var(--taupe);
   padding: 0.85rem 1rem;
   transition: border-color 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
 }
@@ -903,7 +933,7 @@ body.nav-open .brand img,
 
 /* ---------- Contact info block ---------- */
 .info-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.6rem; }
-.info-list .label { font-family: var(--font-ui); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--brass-text); margin-bottom: 0.3rem; }
+.info-list .label { font-family: var(--font-ui); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--brass-text); margin-bottom: 0.3rem; }
 .info-list .value { font-size: 1.08rem; line-height: 1.55; }
 .info-list .value a { text-decoration: none; }
 .info-list .value a:hover { text-decoration: underline; }
@@ -927,7 +957,7 @@ body.nav-open .brand img,
   color: var(--paper-on-dark);
   padding: 0.8rem 1.2rem;
   font-family: var(--font-ui);
-  font-size: 0.8rem;
+  font-size: 0.875rem;
 }
 .skip-link:focus { left: 0; }
 
@@ -945,9 +975,9 @@ body.nav-open .brand img,
   align-items: baseline;
   gap: 1rem;
   font-family: var(--font-ui);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--walnut);
 }
@@ -1023,7 +1053,7 @@ body.nav-open .brand img,
 .ledger-entry summary:hover { color: var(--garnet); }
 .ledger-entry .who {
   font-family: var(--font-ui);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1050,7 +1080,7 @@ body.nav-open .brand img,
 .colophon-call { text-align: center; padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 4vw, 3rem); }
 .colophon-call .lead-in {
   font-family: var(--font-ui);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -1071,8 +1101,8 @@ body.nav-open .brand img,
   transition: color 0.3s var(--ease-out);
 }
 .colophon-call .big-email:hover { color: #fff; }
-.colophon-note a { color: var(--paper-on-dark); text-decoration: none; }
-.colophon-note a:hover { color: #fff; text-decoration: underline; }
+.colophon-note a { color: var(--paper-on-dark); text-decoration: underline; text-decoration-color: rgba(241, 234, 216, 0.5); text-underline-offset: 3px; }
+.colophon-note a:hover { color: #fff; text-decoration-color: currentColor; }
 .colophon-note {
   text-align: center;
   margin-inline: auto;
@@ -1102,9 +1132,9 @@ body.nav-open .brand img,
 .specimen-strip.landscape img { aspect-ratio: 4 / 3; }
 .specimen-strip figcaption {
   font-family: var(--font-ui);
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--taupe);
   margin-top: 0.55rem;
@@ -1134,7 +1164,7 @@ body.nav-open .brand img,
 
   /* Eyebrows: tighter tracking, balanced two-line wraps, no orphans */
   .eyebrow {
-    font-size: 0.66rem;
+    font-size: 0.72rem;
     letter-spacing: 0.12em;
     gap: 0.7rem;
     text-wrap: balance;
@@ -1143,15 +1173,15 @@ body.nav-open .brand img,
 
   /* Folios: let chapter/note wrap as whole rows, not mid-phrase */
   .folio {
-    font-size: 0.64rem;
+    font-size: 0.7rem;
     letter-spacing: 0.13em;
     flex-wrap: wrap;
     gap: 0.35rem 1rem;
     text-wrap: pretty;
   }
 
-  /* Header brand: .32em tracking crowds the nav toggle at 375px */
-  .brand-name .bottom { font-size: 0.55rem; letter-spacing: 0.22em; }
+  /* Header brand: wide tracking crowds the nav toggle at 375px */
+  .brand-name .bottom { font-size: 0.6rem; letter-spacing: 0.18em; }
 
   /* Buttons: keep the label on one line on narrow phones */
   .btn { font-size: 0.75rem; letter-spacing: 0.11em; padding: 1rem 1.5rem; }
@@ -1160,8 +1190,8 @@ body.nav-open .brand img,
   .ba-label { letter-spacing: 0.16em; }
 
   /* Attribution / meta lines: avoid one-word orphans ("VA") */
-  .quote-attr { font-size: 0.68rem; letter-spacing: 0.12em; text-wrap: balance; }
-  .cta-meta { font-size: 0.7rem; letter-spacing: 0.1em; line-height: 1.8; text-wrap: balance; }
+  .quote-attr { font-size: 0.72rem; letter-spacing: 0.12em; text-wrap: balance; }
+  .cta-meta { font-size: 0.72rem; letter-spacing: 0.1em; line-height: 1.8; text-wrap: balance; }
   .stat .label { letter-spacing: 0.13em; text-wrap: balance; }
   .plate-caption { letter-spacing: 0.1em; }
   .specimen-strip figcaption { letter-spacing: 0.14em; }
@@ -1173,7 +1203,7 @@ body.nav-open .brand img,
   .process-list h3 { font-size: 1.3rem; }
 
   /* Colophon: keep the address comfortably inside 320–480px */
-  .colophon-call .lead-in { font-size: 0.66rem; letter-spacing: 0.16em; }
+  .colophon-call .lead-in { font-size: 0.7rem; letter-spacing: 0.16em; }
   .colophon-call .big-email { font-size: clamp(1.15rem, 5.6vw, 1.45rem); }
 }
 
@@ -1191,3 +1221,33 @@ body.nav-open .brand img,
 }
 .logo-strip img:hover { opacity: 1; filter: none; }
 @media (max-width: 640px) { .logo-strip { gap: 1.6rem 2rem; } .logo-strip img { height: 42px; } }
+
+/* ============================================================
+   Print — guides and contact details must survive on paper.
+   Browsers strip backgrounds by default, so force ink-on-white
+   everywhere and hide the interactive chrome.
+   ============================================================ */
+@media print {
+  *, *::before, *::after {
+    color: #000 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  body { background: #fff !important; font-size: 11pt; }
+  .site-header, .site-nav, .nav-toggle, .skip-link, .hero-scroll,
+  .ba-handle, .ba-range, .lightbox, .filter-bar, .seal,
+  .site-footer form, iframe { display: none !important; }
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
+  .hero { min-height: auto; }
+  .page-hero, .page-hero--image { padding-top: 1.5rem; }
+  .section, .manifesto { padding-block: 1.5rem; }
+  .section--dark, .site-footer, .cta-band { border-top: 1px solid #000; }
+  .btn { border: 1px solid #000; }
+  a { text-decoration: underline; }
+  /* Cards that set text over photographs: print the text, not the photo */
+  .service-card { aspect-ratio: auto; }
+  .service-card img, .page-hero-bg { display: none !important; }
+  .service-card-body { position: static; }
+  .tile .tile-label { opacity: 1; transform: none; }
+}
